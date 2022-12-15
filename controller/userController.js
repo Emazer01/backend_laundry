@@ -32,7 +32,6 @@ const login = async (req, res, next) => {
     const { email, password } = req.body
     try {
         var result = await Services.login(email, password)
-        console.log(result)
         res.send(result)
     } catch (error) {
         res.send("Email Tidak Valid");
@@ -86,7 +85,6 @@ const changePw = async (req, res, next) => {
         const decode = req.user
         const body = req.body
         var result = await Services.changePw(body.oldpw, body.newpw, decode.password, decode.id)
-        console.log(result)
         if (result == 'Invalid User') {
             res.status(412).send(result)
         } else if (result == 'sudah update') {
@@ -114,7 +112,6 @@ const addresses = async (req, res, next) => {
 const updateaddress = async (req, res, next) => {
     try {
         const body = req.body
-        console.log(body)
         const result = await Services.updateaddress(body.cust_name, body.cust_phone, body.cust_address, body.cust_id)
         res.status(200).send(result)
     } catch (err) {
@@ -126,7 +123,6 @@ const updateaddress = async (req, res, next) => {
 const addaddress = async (req, res, next) => {
     try {
         const body = req.body
-        console.log(body)
         const result = await Services.addaddress(body.cust_name, body.cust_phone, body.cust_address, body.user_id)
         res.status(200).send(result)
     } catch (err) {
@@ -138,7 +134,6 @@ const addaddress = async (req, res, next) => {
 const requests = async (req, res, next) => {
     try {
         const body = req.body
-        console.log('body :', body.id)
         const requests = await Services.requests(body.id)
         res.status(200).json(requests)
     } catch (err) {
@@ -150,7 +145,6 @@ const requests = async (req, res, next) => {
 const addrequest = async (req, res, next) => {
     try {
         const body = req.body
-        console.log(body)
         const result = await Services.addrequest(body.req_unit, body.req_cust, body.req_mode, body.req_notes, body.req_est)
         res.status(200).send(result)
     } catch (err) {
@@ -163,7 +157,6 @@ const deleteaddress = async (req, res, next) => {
     try {
         const body = req.body
         const result =  await Services.deleteaddress(body.cust_id)
-        console.log(result)
         if (result instanceof Error) {
             throw new Error(result);
         }
@@ -178,7 +171,6 @@ const deleterequest = async (req, res, next) => {
     try {
         const body = req.body
         const result =  await Services.deleterequest(body.req_id)
-        console.log(result)
         if (result instanceof Error) {
             throw new Error(result);
         }
@@ -192,7 +184,6 @@ const deleterequest = async (req, res, next) => {
 const pickedrequest = async (req, res, next) => {
     try {
         const body = req.body
-        console.log(body.req_id)
         const result =  await Services.pickedrequest(body.req_id)
         if (result instanceof Error) {
             throw new Error(result);
@@ -207,7 +198,6 @@ const pickedrequest = async (req, res, next) => {
 const addorder = async (req, res, next) => {
     try {
         const body = req.body
-        console.log(body)
         const result = await Services.addorder(body.cost, body.qty, body.address, body.type, body.notes, body.user)
         if (result instanceof Error) {
             throw new Error(result);
@@ -222,7 +212,6 @@ const addorder = async (req, res, next) => {
 const orders = async (req, res, next) => {
     try {
         const body = req.body
-        console.log('body :', body.id)
         const requests = await Services.orders(body.id)
         if (requests instanceof Error) {
             throw new Error(requests);
