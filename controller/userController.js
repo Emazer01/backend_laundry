@@ -66,7 +66,6 @@ const verify = async (req, res, next) => {
 const updateprofile = async (req, res, next) => {
     try {
         const body = req.body
-        const query = `UPDATE user_cred SET username=$1, user_email=$2 WHERE user_id=$3`
         const result = await Services.updateprofile(body.user, body.email, body.id)
         if (result == 'sudah update') {
             res.status(200).send('sudah update')

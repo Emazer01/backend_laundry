@@ -55,11 +55,9 @@ const verify = async (email,password) => {
     try {
         const query = `SELECT * FROM user_cred WHERE user_email=$1 AND user_pass=$2`
         const user = (await db.query(query,[email,password])).rows
-        console.log(user[0].user_id)
         if (user == '') {
             return('Invalid User')
         } else {
-            console.log(user[0].user_priv)
             if (user[0].user_priv == 1) {
                 return({
                     id:user[0].user_id,
@@ -77,7 +75,6 @@ const updateprofile = async (username,email,id) => {
     try {
         const query = `UPDATE user_cred SET username=$1, user_email=$2 WHERE user_id=$3`
         const user = await db.query(query,[username,email,id])
-        console.log('sudah update')
         return ('sudah update')
     } catch {
         console.log(err.message);
@@ -88,15 +85,12 @@ const updateprofile = async (username,email,id) => {
 const changePw = async (oldpw,newpw,password,id) => {
     try {
         var result = await bcrypt.compare(oldpw,password)
-        console.log(result)
         if (result != true) {
             return('Invalid User')
         } else {
             const hash = await bcrypt.hash(newpw, 10)
-            console.log(hash)
             const query = `UPDATE user_cred SET user_pass=$1 WHERE user_id=$2`
             await db.query(query, [hash,id])
-            console.log('sudah update')
             return('sudah update')
         }
     } catch {
@@ -158,7 +152,6 @@ const requests = async (id) => {
 const addrequest = async (req_unit,req_cust,req_mode,req_notes,req_est) => {
     try {
         const date = new Date()
-        console.log(date)
         const query = `INSERT INTO req_list(req_id,req_date,req_unit,req_cust,req_stat,req_mode,req_notes,req_est_cost) VALUES(DEFAULT,$1,$2,$3,DEFAULT,$4,$5,$6)`
         await db.query(query, [date,req_unit,req_cust,req_mode,req_notes,req_est])
         return('berhasil request')
@@ -170,7 +163,6 @@ const addrequest = async (req_unit,req_cust,req_mode,req_notes,req_est) => {
 const deleteaddress = async (id) => {
     try {
         const query = `DELETE FROM customer_data WHERE cust_id = $1`
-        console.log(id)
         await db.query(query, [id])
         return('berhasil request')
     } catch (err){
@@ -181,7 +173,6 @@ const deleteaddress = async (id) => {
 const deleterequest= async (id) => {
     try {
         const query = `DELETE FROM req_list WHERE req_id = $1`
-        console.log(id)
         await db.query(query, [id])
         return('berhasil cancel')
     } catch (err){
@@ -202,7 +193,6 @@ const pickedrequest = async (id) => {
 const addorder = async (cost,qty,address,type,notes,user) => {
     try {
         const date = new Date()
-        console.log(date)
         const query = `INSERT INTO order_list(order_id, order_date, order_bill, order_unit, order_cust, order_stat, order_mode, order_notes, order_user) VALUES(DEFAULT,$1,$2,$3,$4,DEFAULT,$5,$6,$7)`
         await db.query(query, [date,cost,qty,address,type,notes,user])
         return('berhasil request')
