@@ -52,7 +52,8 @@ const addaddress = [
 const addrequest = [
     body("req_unit").isNumeric().notEmpty(), 
     body("req_notes").isString(), 
-    body("req_est").isString().notEmpty(), 
+    body("req_est").isString().notEmpty(),
+    body("cust_address").notEmpty(),
     validator
 ];
 
