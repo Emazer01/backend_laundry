@@ -53,7 +53,7 @@ const addrequest = [
     body("req_unit").isNumeric().notEmpty(), 
     body("req_notes").isString(), 
     body("req_est").isString().notEmpty(),
-    body("cust_address").notEmpty(),
+    body("req_cust").notEmpty(),
     validator
 ];
 
