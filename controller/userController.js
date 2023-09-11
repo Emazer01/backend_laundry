@@ -13,7 +13,6 @@ SECRET = process.env.SECRET
 const register = async (req, res, next) => {
     // * 7. silahkan ubah password yang telah diterima menjadi dalam bentuk hashing
     const { username, email, password } = req.body
-
     // 8. Silahkan coding agar pengguna bisa menyimpan semua data yang diinputkan ke dalam database
     try {
         const result = await Services.register(username, email, password)

@@ -5,8 +5,10 @@ const jwt = require('jsonwebtoken');
 const register = async (username,email,password) => {
     try {
         const hash = await bcrypt.hash(password, 10)
-        const query = `INSERT INTO user_cred VALUES(DEFAULT, $1, $2, $3, DEFAULT)`;
+        console.log(username,email,hash)
+        const query = `INSERT INTO user_cred VALUES(DEFAULT, $1, $2, $3, 2)`;
         const result = await db.query(query,[username,email,hash]);
+        console.log(result)
 
         if (!result) {
             throw new Error('Error inserting Data');
@@ -132,13 +134,13 @@ const addaddress = async (cust_name,cust_phone,cust_address,user_id) => {
 const requests = async (id) => {
     try {
         if (id == '') {
-            const query = `SELECT a.req_id, a.req_date, a.req_notes,  d.stat_label, c.mode_label, c.plus_price, a.req_unit, b.cust_name, b.cust_phone, b.cust_address, b.user_id, a.req_est_cost, c.mode_type  
+            const query = `SELECT a.req_id, a.req_date, a.req_notes,  d.stat_label, c.mode_label, a.req_unit, b.cust_name, b.cust_phone, b.cust_address, b.user_id, a.req_est_cost, c.mode_type  
                 FROM req_list a INNER JOIN customer_data b ON a.req_cust = b.cust_id INNER JOIN modes c ON a.req_mode = c.mode_id INNER JOIN req_status d ON a.req_stat = d.stat_id 
                 INNER JOIN types e ON  c.mode_type = e.type_id ORDER BY a.req_id`
             const requests = (await db.query(query)).rows
             return(requests)
         } else {
-            const query = `SELECT a.req_id, a.req_date, a.req_notes,  d.stat_label, c.mode_label, c.plus_price, a.req_unit, b.cust_name, b.cust_phone, b.cust_address, b.user_id, a.req_est_cost, c.mode_type  
+            const query = `SELECT a.req_id, a.req_date, a.req_notes,  d.stat_label, c.mode_label, a.req_unit, b.cust_name, b.cust_phone, b.cust_address, b.user_id, a.req_est_cost, c.mode_type  
                 FROM req_list a INNER JOIN customer_data b ON a.req_cust = b.cust_id INNER JOIN modes c ON a.req_mode = c.mode_id INNER JOIN req_status d ON a.req_stat = d.stat_id 
                 INNER JOIN types e ON  c.mode_type = e.type_id WHERE b.user_id = $1 ORDER BY a.req_id`
             const requests = (await db.query(query, [id])).rows
@@ -152,7 +154,7 @@ const requests = async (id) => {
 const addrequest = async (req_unit,req_cust,req_mode,req_notes,req_est) => {
     try {
         const date = new Date()
-        const query = `INSERT INTO req_list(req_id,req_date,req_unit,req_cust,req_stat,req_mode,req_notes,req_est_cost) VALUES(DEFAULT,$1,$2,$3,DEFAULT,$4,$5,$6)`
+        const query = `INSERT INTO req_list(req_id,req_date,req_unit,req_cust,req_stat,req_mode,req_notes,req_est_cost) VALUES(DEFAULT,$1,$2,$3,1 ,$4,$5,$6)`
         await db.query(query, [date,req_unit,req_cust,req_mode,req_notes,req_est])
         return('berhasil request')
     } catch (error) {
@@ -193,8 +195,10 @@ const pickedrequest = async (id) => {
 const addorder = async (cost,qty,address,type,notes,user) => {
     try {
         const date = new Date()
-        const query = `INSERT INTO order_list(order_id, order_date, order_bill, order_unit, order_cust, order_stat, order_mode, order_notes, order_user) VALUES(DEFAULT,$1,$2,$3,$4,DEFAULT,$5,$6,$7)`
+        console.log(date,cost,qty,address,type,notes,user)
+        const query = `INSERT INTO order_list(order_id, order_date, order_bill, order_unit, order_cust, order_stat, order_mode, order_notes, order_user) VALUES(DEFAULT,$1,$2,$3,$4,1,$5,$6,$7)`
         await db.query(query, [date,cost,qty,address,type,notes,user])
+        console.log('berhasil')
         return('berhasil request')
     } catch (err){
         return Error
